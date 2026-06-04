@@ -15,19 +15,19 @@
                 <div class="card bg-secondary text-white p-4 text-center">
                     <h3>Zarządzanie Pokojami</h3>
                     <p>Dodawaj, usuwaj i modyfikuj dostępne sale szkoleniowe i pokoje.</p>
-                    <a href="{{ url_for('admin_rooms') }}" class="btn btn-primary">Przejdź do pokoi</a>
+                    <a href="{{ url_for('admin.admin_rooms') }}" class="btn btn-primary">Przejdź do pokoi</a>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="card bg-secondary text-white p-4 text-center">
                     <h3>Zarządzanie Użytkownikami</h3>
                     <p>Modyfikuj dane pracowników, zmieniaj uprawnienia oraz nadawaj/zdejmuj bany.</p>
-                    <a href="{{ url_for('admin_users') }}" class="btn btn-warning">Przejdź do użytkowników</a>
+                    <a href="{{ url_for('admin.admin_users') }}" class="btn btn-warning">Przejdź do użytkowników</a>
                 </div>
             </div>
         </div>
         <main class="mt-5">
-            <a href="{{ url_for('home') }}" class="btn btn-outline-light">Powrót do strony głównej</a>
+            <a href="{{ url_for('main.home') }}" class="btn btn-outline-light">Powrót do strony głównej</a>
         </main>
     </div>
 </body>

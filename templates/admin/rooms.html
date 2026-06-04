@@ -9,7 +9,7 @@
     <div class="container mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>🏢 Zarządzanie Pokojami i Salami</h2>
-            <a href="{{ url_for('admin_panel') }}" class="btn btn-outline-secondary">⬅️ Powrót do Panelu</a>
+            <a href="{{ url_for('admin.admin_panel') }}" class="btn btn-outline-secondary">⬅️ Powrót do Panelu</a>
         </div>
 
         <div class="row">
@@ -72,7 +72,7 @@
                                     <td>{{ room.name }}</td>
                                     <td><span class="badge bg-secondary">User ID: {{ room.manager_id }}</span></td>
                                     <td class="text-center">
-                                        <a href="{{ url_for('delete_room', room_id=room.id) }}"
+                                        <a href="{{ url_for('admin.delete_room', room_id=room.id) }}"
                                            class="btn btn-danger btn-sm"
                                            onclick="return confirm('Czy na pewno chcesz usunąć ten pokój?')">
                                             Usuń
