@@ -6,6 +6,20 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationE
 # Załóżmy, że plik app.py i forms.py są w tym samym folderze
 # Importujemy obiekt bazy danych i Model, aby sprawdzić, czy email już istnieje
 from app import db, User
+from wtforms import IntegerField, SelectField
+
+class RoomForm(FlaskForm):
+    number = IntegerField("Numer pokoju", validators=[DataRequired()])
+    name = StringField("Nazwa sali/pokoju", validators=[DataRequired(), Length(max=40)])
+    manager_id = IntegerField("ID Menedżera odpowiedzialnego", validators=[DataRequired()])
+    submit = SubmitField("Zapisz pokój")
+
+class AdminUserEditForm(FlaskForm):
+    name = StringField("Imię", validators=[DataRequired(), Length(min=2, max=30)])
+    surname = StringField("Nazwisko", validators=[DataRequired(), Length(min=2, max=30)])
+    email = EmailField("Email", validators=[DataRequired(), Email()])
+    role = SelectField("Rola", choices=[('GUEST', 'Guest'), ('EMPLOYEE', 'Employee'), ('MANAGER', 'Manager'), ('ADMIN', 'Admin')], validators=[DataRequired()])
+    submit = SubmitField("Aktualizuj użytkownika")
 
 
 class RegisterForm(FlaskForm):

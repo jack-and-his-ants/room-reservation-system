@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Zarządzanie Pokojami</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>🏢 Zarządzanie Pokojami i Salami</h2>
+            <a href="{{ url_for('admin_panel') }}" class="btn btn-outline-secondary">⬅️ Powrót do Panelu</a>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm p-4">
+                    <h4 class="mb-3">Dodaj nowy pokój</h4>
+                    <form method="POST" action="">
+                        {{ form.csrf_token }}
+
+                        <div class="mb-3">
+                            {{ form.number.label(class="form-label") }}
+                            {{ form.number(class="form-control", type="number") }}
+                            {% for error in form.number.errors %}
+                                <div class="text-danger small">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.name.label(class="form-label") }}
+                            {{ form.name(class="form-control") }}
+                            {% for error in form.name.errors %}
+                                <div class="text-danger small">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.manager_id.label(class="form-label") }}
+                            {{ form.manager_id(class="form-control", type="number") }}
+                            {% for error in form.manager_id.errors %}
+                                <div class="text-danger small">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            {{ form.submit(class="btn btn-success") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="card shadow-sm p-4">
+                    <h4 class="mb-3">Lista zarejestrowanych pokoi</h4>
+                    <div class="table-responsive">
+                        <table class="table table-striped align-middle">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Numer</th>
+                                    <th>Nazwa Sali</th>
+                                    <th>ID Menedżera</th>
+                                    <th class="text-center">Akcje</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for room in rooms %}
+                                <tr>
+                                    <td>{{ room.id }}</td>
+                                    <td><strong>{{ room.number }}</strong></td>
+                                    <td>{{ room.name }}</td>
+                                    <td><span class="badge bg-secondary">User ID: {{ room.manager_id }}</span></td>
+                                    <td class="text-center">
+                                        <a href="{{ url_for('delete_room', room_id=room.id) }}"
+                                           class="btn btn-danger btn-sm"
+                                           onclick="return confirm('Czy na pewno chcesz usunąć ten pokój?')">
+                                            Usuń
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-4">Brak zarejestrowanych pokoi w bazie danych.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

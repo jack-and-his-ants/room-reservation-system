@@ -4,3 +4,4 @@ flask-login
 flask-bcrypt
 flask-wtf
 python-dotenv
+email_validator
