@@ -5,3 +5,4 @@ flask-bcrypt
 flask-wtf
 python-dotenv
 email_validator
+psycopg2-binary
