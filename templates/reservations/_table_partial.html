@@ -1,0 +1,62 @@
+<div class="table-responsive card shadow-sm p-3 bg-white">
+    <table class="table table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Pokój</th>
+                <th>Kto rezerwuje</th>
+                <th>Od</th>
+                <th>Do</th>
+                <th>Status</th>
+                {% if show_actions or current_user.role == UserRole.ADMIN %}
+                    <th class="text-end">Akcje</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for res in items %}
+            <tr>
+                <td><strong>#{{ res.id }}</strong></td>
+                <td>Pokój {{ res.room.number }} <small class="text-muted">({{ res.room.name }})</small></td>
+                <td>{{ res.user.name }} {{ res.user.surname }} <span class="badge bg-light text-dark font-monospace">{{ res.user.role.name }}</span></td>
+                <td>{{ res.datetime_start.strftime('%d.%m.%Y %H:%M') }}</td>
+                <td>{{ res.datetime_end.strftime('%H:%M') }}</td>
+                <td>
+                    {% if res.accepted %}
+                        <span class="badge bg-success">✔️ Zaakceptowana</span>
+                    {% else %}
+                        <span class="badge bg-warning text-dark">⏳ Oczekuje</span>
+                    {% endif %}
+                </td>
+
+                {% if show_actions or current_user.role == UserRole.ADMIN %}
+                <td class="text-end">
+                    <div class="d-inline-flex gap-1">
+
+                        {% if current_user.role == UserRole.ADMIN and res.user_id != current_user.id %}
+                            {% if not res.accepted %}
+                                <form action="{{ url_for('reservations.accept_res', res_id=res.id) }}" method="POST">
+                                    <button type="submit" class="btn btn-sm btn-outline-success">Akceptuj</button>
+                                </form>
+                            {% else %}
+                                <form action="{{ url_for('reservations.reject_res', res_id=res.id) }}" method="POST">
+                                    <button type="submit" class="btn btn-sm btn-outline-warning">Cofnij akceptację</button>
+                                </form>
+                            {% endif %}
+                        {% endif %}
+
+                        {% if current_user.role == UserRole.ADMIN or res.user_id == current_user.id %}
+                            <form action="{{ url_for('reservations.delete_res', res_id=res.id) }}" method="POST"
+                                  onsubmit="return confirm('Czy na pewno chcesz usunąć tę rezerwację?');">
+                                <button type="submit" class="btn btn-sm btn-danger">Usuń</button>
+                            </form>
+                        {% endif %}
+
+                    </div>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

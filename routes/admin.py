@@ -39,6 +39,12 @@ def admin_rooms():
     rooms = db.session.scalars(db.select(Room)).all()
     return render_template('admin/rooms.html', rooms=rooms, form=form)
 
+@admin_blueprint.route('/reservations', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def admin_reservations():
+    return render_template("admin/reservations.html")
+
 
 @admin_blueprint.route('/rooms/delete/<int:room_id>')
 @login_required

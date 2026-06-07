@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Podsumowanie rezerwacji</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white text-center">
+                        <h3>📋 Podsumowanie Rezerwacji</h3>
+                    </div>
+                    <div class="card-body p-4">
+                        <p class="fs-5">Sprawdź, czy poniższe dane się zgadzają:</p>
+                        <hr>
+                        <ul class="list-group list-group-flush mb-4">
+                            <li class="list-group-item">🏢 <strong>Pokój:</strong> Pokój {{ room.number }} ({{ room.name }})</li>
+                            <li class="list-group-item">📅 <strong>Data:</strong> {{ start_dt.strftime('%d.%m.%Y') }}</li>
+                            <li class="list-group-item">⏰ <strong>Godzina rozpoczęcia:</strong> {{ start_dt.strftime('%H:%M') }}</li>
+                            <li class="list-group-item">⏳ <strong>Godzina zakończenia:</strong> {{ end_dt.strftime('%H:%M') }} ({{ duration }} min)</li>
+                        </ul>
+
+                        <form action="{{ url_for('reservations.confirm_booking') }}" method="POST">
+                            <input type="hidden" name="room_id" value="{{ room.id }}">
+                            <input type="hidden" name="start_dt" value="{{ start_dt_str }}">
+                            <input type="hidden" name="duration" value="{{ duration }}">
+
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-success btn-lg">✔️ Potwierdzam rezerwację</button>
+                                <a href="javascript:history.back()" class="btn btn-outline-secondary">❌ Anuluj i wróć</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

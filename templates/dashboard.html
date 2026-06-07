@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Strona Główna{% endblock %}
+
+{% block content %}
+<h1>Panel Testowy Autoryzacji</h1>
+        <p>Status: <strong>Zalogowano pomyślnie!</strong></p>
+        <hr>
+        <ul>
+            <li><strong>Imię i nazwisko:</strong> {{current_user.name}} {{current_user.surname}}</li>
+            <li><strong>Wygenerowany login (username):</strong> {{current_user.username}}</li>
+            <li><strong>Email:</strong> {{current_user.email}}</li>
+            <li><strong>Twoja rola w systemie:</strong> <span style="color: blue;">{{current_user.role.value}}</span></li>
+        </ul>
+        <hr>
+<a href="{url_for('auth.logout')}"> Wyloguj mnie stąd</a>
+
+{% endblock %}

@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %}Panel Rezerwacji{% endblock %}
+
+{% block content %}
+<div class="mt-2">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>🗓️ Panel Zarządzania Rezerwacjami</h2>
+        <span class="badge bg-secondary fs-6">Rola: {{ current_user.role.name }}</span>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <ul class="nav nav-tabs mb-4" id="reservationTabs" role="tablist">
+        <li class="nav-item">
+            <button class="nav-link active" id="own-tab" data-bs-toggle="tab" data-bs-target="#own" type="button">
+                👤 Moje rezerwacje ({{ lists.own|length }})
+            </button>
+        </li>
+
+        {% if current_user.role == UserRole.ADMIN %}
+            <li class="nav-item">
+                <button class="nav-link" id="admin-tab" data-bs-toggle="tab" data-bs-target="#admin" type="button">
+                    ⚙️ Wszystkie rezerwacje w systemie ({{ lists.admin_all|length }})
+                </button>
+            </li>
+        {% endif %}
+
+        {% if current_user.role == UserRole.MANAGER %}
+            <li class="nav-item">
+                <button class="nav-link" id="subordinates-tab" data-bs-toggle="tab" data-bs-target="#subordinates" type="button">
+                    👥 Rezerwacje podwładnych ({{ lists.subordinates|length }})
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" id="rooms-tab" data-bs-toggle="tab" data-bs-target="#rooms" type="button">
+                    🏢 Rezerwacje moich pokoi ({{ lists.managed_rooms|length }})
+                </button>
+            </li>
+        {% endif %}
+    </ul>
+
+    <div class="tab-content" id="reservationTabsContent">
+
+        <div class="tab-pane fade show active" id="own" role="tabpanel">
+            {% if lists.own|length > 0 %}
+                {% set show_actions = true %}
+                {% set items = lists.own %}
+                {% include 'reservations/_table_partial.html' %}
+            {% else %}
+                <p class="text-muted">Nie masz zaplanowanych żadnych rezerwacji.</p>
+            {% endif %}
+        </div>
+
+        {% if current_user.role == UserRole.ADMIN %}
+            <div class="tab-pane fade" id="admin" role="tabpanel">
+                {% if lists.admin_all|length > 0 %}
+                    {% set show_actions = true %}
+                    {% set items = lists.admin_all %}
+                    {% include 'reservations/_table_partial.html' %}
+                {% else %}
+                    <p class="text-muted">Brak innych rezerwacji w systemie.</p>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if current_user.role == UserRole.MANAGER %}
+            <div class="tab-pane fade" id="subordinates" role="tabpanel">
+                {% if lists.subordinates|length > 0 %}
+                    {% set show_actions = false %} 
+                    {% set items = lists.subordinates %}
+                    {% include 'reservations/_table_partial.html' %}
+                {% else %}
+                    <p class="text-muted">Twoi podwładni nie mają obecnie żadnych rezerwacji.</p>
+                {% endif %}
+            </div>
+
+            <div class="tab-pane fade" id="rooms" role="tabpanel">
+                {% if lists.managed_rooms|length > 0 %}
+                    {% set show_actions = false %}
+                    {% set items = lists.managed_rooms %}
+                    {% include 'reservations/_table_partial.html' %}
+                {% else %}
+                    <p class="text-muted">Brak rezerwacji w pokojach, którymi zarządzasz.</p>
+                {% endif %}
+            </div>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

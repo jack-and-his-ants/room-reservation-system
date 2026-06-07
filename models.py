@@ -38,7 +38,7 @@ class Room(db.Model):
 
 
 class Reservation(db.Model):
-    __tablename__ = 'reservation'
+    __tablename__ = 'reservations'
     id = db.Column(db.Integer, primary_key=True)
     date_created = db.Column(db.DateTime, default=datetime.now, nullable=False)
     datetime_start = db.Column(db.DateTime, nullable=False)
@@ -46,3 +46,5 @@ class Reservation(db.Model):
     room_id = db.Column(db.Integer, db.ForeignKey('room.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     accepted = db.Column(db.Boolean, nullable=False, default=False)
+    room = db.relationship('Room', backref='room_reservations')
+    user = db.relationship('User', backref='user_reservations')

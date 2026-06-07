@@ -3,8 +3,6 @@ from wtforms import StringField, PasswordField, SubmitField
 from wtforms.fields import EmailField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 
-# Załóżmy, że plik app.py i forms.py są w tym samym folderze
-# Importujemy obiekt bazy danych i Model, aby sprawdzić, czy email już istnieje
 from app import db, User
 from wtforms import IntegerField, SelectField
 
