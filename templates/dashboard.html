@@ -13,6 +13,6 @@
             <li><strong>Twoja rola w systemie:</strong> <span style="color: blue;">{{current_user.role.value}}</span></li>
         </ul>
         <hr>
-<a href="{url_for('auth.logout')}"> Wyloguj mnie stąd</a>
+<a href="{{url_for('auth.logout')}}"> Wyloguj mnie stąd</a>
 
 {% endblock %}

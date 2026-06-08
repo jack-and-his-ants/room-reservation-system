@@ -29,11 +29,11 @@
                     {% endif %}
                 </td>
 
-                {% if show_actions or current_user.role == UserRole.ADMIN %}
+                {% if show_actions or current_user.role == UserRole.ADMIN or current_user.role==UserRole.MANAGER %}
                 <td class="text-end">
                     <div class="d-inline-flex gap-1">
 
-                        {% if current_user.role == UserRole.ADMIN and res.user_id != current_user.id %}
+                        {% if (current_user.role == UserRole.ADMIN or current_user.role==UserRole.MANAGER) and res.user_id != current_user.id %}
                             {% if not res.accepted %}
                                 <form action="{{ url_for('reservations.accept_res', res_id=res.id) }}" method="POST">
                                     <button type="submit" class="btn btn-sm btn-outline-success">Akceptuj</button>
@@ -45,7 +45,7 @@
                             {% endif %}
                         {% endif %}
 
-                        {% if current_user.role == UserRole.ADMIN or res.user_id == current_user.id %}
+                        {% if (current_user.role == UserRole.ADMIN or current_user.role==UserRole.MANAGER) or res.user_id == current_user.id %}
                             <form action="{{ url_for('reservations.delete_res', res_id=res.id) }}" method="POST"
                                   onsubmit="return confirm('Czy na pewno chcesz usunąć tę rezerwację?');">
                                 <button type="submit" class="btn btn-sm btn-danger">Usuń</button>

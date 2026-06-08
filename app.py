@@ -1,13 +1,13 @@
 import os
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 import dotenv
 from flask import Flask
 
 from extensions import db, bcrypt, login_manager
-# MODYFIKACJA: Dodano UserRole do importu z modeli
 from models import User, UserRole
 
 from routes.main import main_bp
-from routes.auth import auth_bp
+from routes.auth import auth_bp, github_bp
 from routes.admin import admin_blueprint
 from routes.reservations import reservations_bp
 
@@ -45,6 +45,9 @@ app.register_blueprint(main_bp)
 app.register_blueprint(auth_bp)
 app.register_blueprint(admin_blueprint)
 app.register_blueprint(reservations_bp)
+
+
+app.register_blueprint(github_bp, url_prefix="/login")
 
 if __name__ == '__main__':
     app.run(debug=True)

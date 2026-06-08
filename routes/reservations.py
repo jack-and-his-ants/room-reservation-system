@@ -169,7 +169,7 @@ def manage_reservations():
 @login_required
 def accept_res(res_id):
     # Tylko admin może akceptować w tym widoku (lub manager jeśli dasz mu uprawnienia)
-    if current_user.role != UserRole.ADMIN:
+    if current_user.role != UserRole.ADMIN and current_user.role != UserRole.MANAGER:
         flash("Brak uprawnień!", "danger")
         return redirect(url_for('reservations.manage_reservations'))
 
@@ -184,7 +184,7 @@ def accept_res(res_id):
 @reservations_bp.route('/<int:res_id>/reject', methods=['POST'])
 @login_required
 def reject_res(res_id):
-    if current_user.role != UserRole.ADMIN:
+    if current_user.role != UserRole.ADMIN and current_user.role != UserRole.MANAGER:
         flash("Brak uprawnień!", "danger")
         return redirect(url_for('reservations.manage_reservations'))
 
@@ -203,7 +203,7 @@ def delete_res(res_id):
     if not res:
         return redirect(url_for('reservations.manage_reservations'))
 
-    if current_user.role == UserRole.ADMIN or res.user_id == current_user.id:
+    if current_user.role == UserRole.ADMIN or res.user_id == current_user.id or current_user.role == UserRole.MANAGER:
         db.session.delete(res)
         db.session.commit()
         flash("Rezerwacja została usunięta.", "info")
